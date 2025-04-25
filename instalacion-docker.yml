@@ -1,0 +1,75 @@
+- name: Instalar Docker en un Solo Nodo
+  hosts: servidores
+  become: yes
+  tasks:
+
+    - name: Deshabilitar Swap
+      shell: swapoff -a && sed -i '/ swap / s/^/#/' /etc/fstab
+
+    - name: Instalar dependencias necesarias
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+        state: present
+        update_cache: yes
+
+    - name: Crear directorio para claves GPG
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    # ===========================
+    # LIMPIEZA DE VERSIONES ANTIGUAS DE DOCKER
+    # ===========================
+    - name: Eliminar versiones antiguas de Docker
+      apt:
+        name:
+          - docker.io
+          - docker-doc
+          - docker-compose
+          - docker-compose-v2
+          - docker-ce-cli
+          - docker-ce-rootless-extras
+          - containerd.io
+        state: absent
+        autoremove: yes
+        purge: yes
+
+    - name: Limpiar paquetes y caché de APT
+      shell: apt-get autoremove -y && apt-get clean
+
+    # ===========================
+    # INSTALACIÓN DE DOCKER
+    # ===========================
+    - name: Agregar clave GPG de Docker
+      shell: |
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | tee /etc/apt/keyrings/docker.asc
+        chmod a+r /etc/apt/keyrings/docker.asc
+
+    - name: Agregar repositorio de Docker
+      shell: |
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list
+
+    - name: Actualizar lista de paquetes después de añadir Docker
+      apt:
+        update_cache: yes
+
+    - name: Instalar Docker y sus componentes
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+
+    - name: Habilitar y arrancar Docker
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
