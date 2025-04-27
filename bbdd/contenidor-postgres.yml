@@ -1,0 +1,46 @@
+- name: Crear contenidor PostgreSQL i afegir dades
+  hosts: servidores
+  become: true
+  vars:
+    container_name: contenidor_postgres
+    postgres_password: postgres
+    db_name: empresa
+    table_name: empleats
+
+  tasks:
+    - name: Iniciar contenidor PostgreSQL
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        image: postgres:15
+        state: started
+        restart_policy: always
+        env:
+          POSTGRES_PASSWORD: "{{ postgres_password }}"
+        ports:
+          - "5432:5432"
+
+    - name: Esperar que PostgreSQL estigui llest
+      wait_for:
+        host: 127.0.0.1
+        port: 5432
+        timeout: 30
+
+    - name: Crear fitxer SQL temporal
+      copy:
+        dest: /tmp/init.sql
+        content: |
+          CREATE DATABASE {{ db_name }};
+          \c {{ db_name }}
+          CREATE TABLE IF NOT EXISTS {{ table_name }} (
+            id SERIAL PRIMARY KEY,
+            nom TEXT,
+            edat INT
+          );
+          INSERT INTO {{ table_name }} (nom, edat) VALUES ('Joan', floor(random()*30 + 20)::int);
+          INSERT INTO {{ table_name }} (nom, edat) VALUES ('Maria', floor(random()*30 + 20)::int);
+
+    - name: Copiar fitxer SQL dins del contenidor
+      command: docker cp /tmp/init.sql {{ container_name }}:/init.sql
+
+    - name: Executar script SQL al contenidor
+      command: docker exec -u postgres {{ container_name }} psql -f /init.sql
