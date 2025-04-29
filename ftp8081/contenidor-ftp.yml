@@ -1,0 +1,40 @@
+- name: Desplegar servidor FTP i Filebrowser amb accés a /home/usuario/ansible-k8s
+  hosts: servidores
+  become: true
+
+  tasks:
+    - name: Assegurar que el directori existeix
+      file:
+        path: /home/usuario/ansible-k8s
+        state: directory
+        mode: '0755'
+
+    - name: Llançar contenidor FTP
+      community.docker.docker_container:
+        name: ftp-server
+        image: fauria/vsftpd
+        state: started
+        restart_policy: always
+        published_ports:
+          - "21:21"
+          - "21000-21010:21000-21010"
+        env:
+          FTP_USER: "admin"
+          FTP_PASS: "admin"
+          PASV_MIN_PORT: "21000"
+          PASV_MAX_PORT: "21010"
+          PASV_ADDRESS: "{{ ansible_host }}"
+        volumes:
+          - /home/usuario/ansible-k8s:/home/vsftpd
+
+    - name: Llançar contenidor Filebrowser
+      community.docker.docker_container:
+        name: filebrowser
+        image: filebrowser/filebrowser
+        state: started
+        restart_policy: always
+        published_ports:
+          - "8081:80"
+        volumes:
+          - /home/usuario/ansible-k8s:/srv
+        command: ["--port", "80", "--noauth"]
