@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projecte Ansible i Docker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    header {
+      background-color: #007acc;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    h1, h2 {
+      font-weight: bold;
+    }
+    section {
+      background-color: white;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 1000px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.9em;
+      color: #666;
+      margin-top: 40px;
+    }
+    ul {
+      list-style: square;
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Projecte d’Automatització amb Ansible i Docker</h1>
+</header>
+
+<section>
+  <h2>Introducció</h2>
+  <p>Aquest projecte té com a objectiu desplegar una infraestructura contenitzada i automatitzada mitjançant <strong>Ansible</strong> i <strong>Docker</strong>, afegint-hi mecanismes de recuperació automàtica i desplegament al núvol.</p>
+</section>
+
+<section>
+  <h2>Serveis Implementats</h2>
+  <ul>
+    <li><strong>Apache:</strong> Servei web que allotja el portal informatiu del projecte.</li>
+    <li><strong>PostgreSQL:</strong> Base de dades relacional per gestionar dades estructurades.</li>
+    <li><strong>Postfix:</strong> Servei SMTP per enviar correus electrònics interns.</li>
+    <li><strong>Prometheus:</strong> Sistema de monitoratge per recollir metrics dels serveis.</li>
+    <li><strong>Grafana:</strong> Plataforma per visualitzar gràfics i dashboards a partir de dades de Prometheus.</li>
+    <li><strong>cAdvisor:</strong> Monitoratge de l'ús de recursos dels contenidors Docker.</li>
+    <li><strong>Alertmanager:</strong> Gestió d'alertes generades per Prometheus davant d'incidències.</li>
+    <li><strong>Node Exporter:</strong> Recollida de metrics de sistema de la màquina amfitriona.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Objectius del Projecte</h2>
+  <ul>
+    <li>Automatitzar el desplegament i gestió de serveis amb Ansible.</li>
+    <li>Contenitzar serveis utilitzant Docker.</li>
+    <li>Simular fallades i comprovar la capacitat d'autorecuperació.</li>
+    <li>Monitoritzar serveis i infraestructura amb Prometheus i Grafana.</li>
+    <li>Desplegar i escalar serveis al núvol.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Metodologia</h2>
+  <p>Es fa servir una metodologia àgil (Scrum) per planificar i iterar el desenvolupament. Es controlen les tasques mitjançant Trello, GitHub i es fa seguiment amb Grafana i Prometheus.</p>
+</section>
+
+<section>
+  <h2>Tecnologies Utilitzades</h2>
+  <ul>
+    <li><strong>Ansible:</strong> Automatització i gestió d'infraestructures.</li>
+    <li><strong>Docker:</strong> Contenització d'aplicacions i serveis.</li>
+    <li><strong>Prometheus:</strong> Monitoratge i alertes.</li>
+    <li><strong>Grafana:</strong> Visualització de dades de monitoratge.</li>
+    <li><strong>cAdvisor:</strong> Estadístiques d'ús de contenidors.</li>
+    <li><strong>Alertmanager:</strong> Gestió i notificació d'alertes.</li>
+    <li><strong>Node Exporter:</strong> Metrics del sistema operatiu.</li>
+  </ul>
+</section>
+
+<footer>
+  <p>© 2025 Projecte de Final de Cicle - Automatització amb Ansible i Docker</p>
+</footer>
+
+</body>
+</html>

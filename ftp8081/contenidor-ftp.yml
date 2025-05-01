@@ -3,10 +3,18 @@
   become: true
 
   tasks:
-    - name: Assegurar que el directori existeix
+    - name: Assegurar que el directori principal existeix
       file:
         path: /home/usuario/ansible-k8s
         state: directory
+        mode: '0755'
+
+    - name: Crear subdirectori per a l'usuari FTP admin
+      file:
+        path: /home/usuario/ansible-k8s/admin
+        state: directory
+        owner: 1000
+        group: 1000
         mode: '0755'
 
     - name: Llançar contenidor FTP

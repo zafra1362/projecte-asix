@@ -6,7 +6,7 @@
       command: docker exec apache_final mkdir -p /usr/local/apache2/htdocs
 
     - name: Copiar index.html al contenidor apache_final
-      command: docker cp /tmp/index.html apache_final:/var/www/html/index.html
+      command: docker cp /home/usuario/projecte-asix/apache8080 apache_final:/var/www/html/index.html
 
     - name: Reiniciar Apache dins del contenidor
       command: docker exec apache_final service apache2 restart
