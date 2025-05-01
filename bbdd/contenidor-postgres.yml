@@ -8,11 +8,6 @@
     table_name: empleats
 
   tasks:
-    - name: Assegurar que Docker està instal·lat
-      apt:
-        name: docker.io
-        state: present
-        update_cache: yes
 
     - name: Iniciar contenidor PostgreSQL
       community.docker.docker_container:
