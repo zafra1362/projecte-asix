@@ -1,6 +1,7 @@
-- name: Llançar Prometheus i cAdvisor
+- name: Llançar Prometheus, cAdvisor i Grafana
   hosts: servidores
   become: true
+  gather_facts: yes
 
   tasks:
     - name: Crear directori de configuració Prometheus
@@ -20,7 +21,7 @@
             alertmanagers:
               - static_configs:
                   - targets:
-                      - '192.168.1.29:9093'  # IP i port de l'Alertmanager
+                      - '{{ ansible_default_ipv4.address }}:9093'
 
           rule_files:
             - "alert_rules.yml"
@@ -28,11 +29,11 @@
           scrape_configs:
             - job_name: 'prometheus'
               static_configs:
-                - targets: ['192.168.1.29:9595']
+                - targets: ['{{ ansible_default_ipv4.address }}:9595']
 
             - job_name: 'cadvisor'
               static_configs:
-                - targets: ['192.168.1.29:8585']
+                - targets: ['{{ ansible_default_ipv4.address }}:8585']
 
     - name: Crear fitxer de regles d'alertes alert_rules.yml
       copy:
@@ -62,7 +63,7 @@
           - /opt/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
           - /opt/prometheus/alert_rules.yml:/etc/prometheus/alert_rules.yml
 
-    - name: Eliminar contenidor cadvisor si existeix
+    - name: Eliminar contenidor cAdvisor si existeix
       community.docker.docker_container:
         name: cadvisor
         state: absent
@@ -83,3 +84,19 @@
           - "/sys:/sys:ro"
           - "/var/lib/docker/:/var/lib/docker:ro"
           - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+
+    - name: Crear volum Docker per Grafana si no existeix
+      community.docker.docker_volume:
+        name: grafana-storage
+        state: present
+
+    - name: Llançar contenidor Grafana
+      community.docker.docker_container:
+        name: grafana
+        image: grafana/grafana
+        state: started
+        restart_policy: always
+        published_ports:
+          - "3000:3000"
+        volumes:
+          - grafana-storage:/var/lib/grafana
