@@ -1,0 +1,53 @@
+/bin/sh: 1: /home/usuario/projecte-asix/relanzar.sh: not found
+/bin/sh: 1: /home/usuario/projecte-asix/relanzar.sh: not found
+/bin/sh: 1: /home/usuario/projecte-asix/relanzar.sh: not found
+/bin/sh: 1: /home/usuario/projecte-asix/relanzar.sh: not found
+/bin/sh: 1: /home/usuario/projecte-asix/relanzar.sh: not found
+/bin/sh: 1: /home/usuario/projecte-asix/relanzar.sh: not found
+/bin/sh: 1: /home/usuario/projecte-asix/relanzar.sh: not found
+/bin/sh: 1: /home/usuario/projecte-asix/relanzar.sh: not found
+mar 13 may 2025 19:15:02 CEST: ✅ grafana está funcionando correctamente.
+mar 13 may 2025 19:15:02 CEST: ✅ cadvisor está funcionando correctamente.
+mar 13 may 2025 19:15:02 CEST: ✅ prometheus está funcionando correctamente.
+mar 13 may 2025 19:15:02 CEST: ✅ postfix-intern-container está funcionando correctamente.
+mar 13 may 2025 19:15:02 CEST: ✅ filebrowser está funcionando correctamente.
+mar 13 may 2025 19:15:02 CEST: ✅ ftp-server está funcionando correctamente.
+mar 13 may 2025 19:15:02 CEST: ⚠️  apache_final está caído. Reiniciando con Ansible...
+
+PLAY [Crear contenedor Docker amb Apache i SSH] ********************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Crear carpeta del Dockerfile] ********************************************
+ok: [localhost]
+
+TASK [Copiar Dockerfile] *******************************************************
+ok: [localhost]
+
+TASK [Construir imatge Docker] *************************************************
+ok: [localhost]
+
+TASK [Assegurar que el contenidor està corrent] ********************************
+changed: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+mar 13 may 2025 19:15:10 CEST: ❌ Contenedor 'postgres' no existe.
+mar 13 may 2025 19:16:01 CEST: ✅ grafana está funcionando correctamente.
+mar 13 may 2025 19:16:01 CEST: ✅ cadvisor está funcionando correctamente.
+mar 13 may 2025 19:16:01 CEST: ✅ prometheus está funcionando correctamente.
+mar 13 may 2025 19:16:01 CEST: ✅ postfix-intern-container está funcionando correctamente.
+mar 13 may 2025 19:16:01 CEST: ✅ filebrowser está funcionando correctamente.
+mar 13 may 2025 19:16:01 CEST: ✅ ftp-server está funcionando correctamente.
+mar 13 may 2025 19:16:01 CEST: ✅ apache_final está funcionando correctamente.
+mar 13 may 2025 19:16:02 CEST: ❌ Contenedor 'postgres' no existe.
+mar 13 may 2025 19:17:01 CEST: ✅ grafana está funcionando correctamente.
+mar 13 may 2025 19:17:01 CEST: ✅ cadvisor está funcionando correctamente.
+mar 13 may 2025 19:17:01 CEST: ✅ prometheus está funcionando correctamente.
+mar 13 may 2025 19:17:01 CEST: ✅ postfix-intern-container está funcionando correctamente.
+mar 13 may 2025 19:17:01 CEST: ✅ filebrowser está funcionando correctamente.
+mar 13 may 2025 19:17:01 CEST: ✅ ftp-server está funcionando correctamente.
+mar 13 may 2025 19:17:01 CEST: ✅ apache_final está funcionando correctamente.
+mar 13 may 2025 19:17:02 CEST: ❌ Contenedor 'postgres' no existe.

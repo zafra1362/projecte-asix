@@ -2,7 +2,7 @@
   hosts: servidores
   become: true
   vars:
-    container_name: postgres_test
+    container_name: postgres
     postgres_password: mysecretpassword
     db_name: empresa
     table_name: empleats

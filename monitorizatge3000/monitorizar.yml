@@ -43,13 +43,14 @@
           - name: docker_alerts
             rules:
             - alert: ContainerDown
-              expr: up == 0
+              expr: time() - container_last_seen > 60
               for: 1m
               labels:
                 severity: critical
               annotations:
-                summary: "Un contenidor ha caigut"
-                description: "El contenidor {{'{{'}} $labels.instance {{'}}'}} no respon."
+                summary: "El contenedor {{ '{{' }} $labels.name {{ '}}' }} está caído"
+                description: "No se ha detectado el contenedor {{ '{{' }} $labels.name {{ '}}' }} en los últimos 60 segundos."
+
 
     - name: Llançar contenidor Prometheus
       community.docker.docker_container:
