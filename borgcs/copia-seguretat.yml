@@ -1,0 +1,78 @@
+- name: Instal·lar Borg i rclone i configurar backup a FTP
+  hosts: servidores
+  become: true
+
+  vars:
+    backup_dir: /home/usuario/projecte-asix/admin
+    borg_repo: /home/usuario/projecte-asix/admin/repo
+    borg_passphrase: "admin"
+    rclone_remote_name: "ftpserver"
+    rclone_host: "localhost"
+    rclone_user: "admin"
+    rclone_pass_obscured: "admin"
+
+  tasks:
+    - name: Instalar BorgBackup i rclone
+      apt:
+        name:
+          - borgbackup
+          - rclone
+        state: present
+        update_cache: yes
+
+    - name: Crear carpeta de backup
+      file:
+        path: "{{ backup_dir }}"
+        state: directory
+        owner: usuario
+        mode: '0755'
+
+    - name: Crear carpeta per config rclone
+      file:
+        path: /home/usuario/.config/rclone
+        state: directory
+        owner: usuario
+        mode: '0700'
+
+    - name: Crear fitxer de configuració rclone.conf
+      copy:
+        dest: /home/usuario/.config/rclone/rclone.conf
+        owner: usuario
+        mode: '0600'
+        content: |
+          [{{ rclone_remote_name }}]
+          type = ftp
+          host = {{ rclone_host }}
+          user = {{ rclone_user }}
+          pass = {{ rclone_pass_obscured }}
+
+    - name: Crear script de backup
+      copy:
+        dest: /home/usuario/projecte-asix/borgcs/backup-ftp.sh
+        owner: usuario
+        mode: '0755'
+        content: |
+          #!/bin/bash
+
+          export BORG_REPO={{ borg_repo }}
+          export BORG_PASSPHRASE='{{ borg_passphrase }}'
+
+          mkdir -p "$BORG_REPO"
+
+          # Inicialitza si no existeix
+          if [ ! -d "$BORG_REPO/data" ]; then
+              borg init --encryption=repokey "$BORG_REPO"
+          fi
+
+          # Crear backup amb borg
+          borg create --stats "$BORG_REPO"::"backup-$(date +%Y-%m-%d_%H-%M-%S)" /etc /home/usuario/projecte-asix
+
+          # Crear nom de fitxer únic
+          FECHA=$(date +%Y-%m-%d_%H-%M-%S)
+          ARCHIVO="{{ backup_dir }}/backup-${FECHA}.tar.gz"
+
+          # Comprimir el repo
+          tar -czf "$ARCHIVO" "$BORG_REPO"
+
+          # Enviar al servidor FTP
+          rclone copy "$ARCHIVO" {{ rclone_remote_name }}:backup

@@ -31,9 +31,9 @@
               fi
           }
 
-          check_container "grafana" "$BASE_PATH/monitorizatge3000/contenidor-grafana.yml"
-          check_container "cadvisor" "$BASE_PATH/monitorizatge3000/contenidor-cadvisor.yml"
-          check_container "prometheus" "$BASE_PATH/monitorizatge3000/contenidor-prometheus.yml"
+          check_container "grafana" "$BASE_PATH/monitorizatge3000/monitorizar.yml.yml"
+          check_container "cadvisor" "$BASE_PATH/monitorizatge3000/monitorizar.yml.yml"
+          check_container "prometheus" "$BASE_PATH/monitorizatge3000/monitorizar.yml"
           check_container "postfix-intern-container" "$BASE_PATH/postfix/contenidor-postfix.yml"
           check_container "filebrowser" "$BASE_PATH/monitorizatge3000/contenidor-filebrowser.yml"
           check_container "ftp-server" "$BASE_PATH/ftp8081/contenidor-ftp.yml"
