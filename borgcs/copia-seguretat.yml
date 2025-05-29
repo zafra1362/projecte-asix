@@ -54,7 +54,7 @@
         content: |
           #!/bin/bash
 
-          export BORG_REPO={{ borg_repo }}
+          export BORG_REPO=/home/usuario/projecte-asix
           export BORG_PASSPHRASE='{{ borg_passphrase }}'
 
           mkdir -p "$BORG_REPO"
